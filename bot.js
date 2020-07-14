@@ -101,8 +101,6 @@ client.on('message', (msg) => {
 	const args = msg.content.slice(prefix.length).trim().split(' ');
 	const command = args.shift().toLowerCase();
 	let diff;
-	console.log(command);
-	console.log(args[0]);
 
 	if (typeof args[0] != 'undefined') {
 		const temp = args[0].toLowerCase();
