@@ -2,7 +2,7 @@
   "name": "leetcode-disc",
   "version": "1.0.0",
   "description": "Discord bot that posts a leetcode questions into chosen server as per scheduled time",
-  "main": "index.js",
+  "main": "bot.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node -r dotenv/config bot.js"
@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/chakrakan/leetcode-disc#readme",
   "dependencies": {
+    "axios": "^0.19.2",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
     "eslint": "^7.4.0"
