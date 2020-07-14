@@ -108,7 +108,7 @@ client.on('message', (msg) => {
 	}
 
 	if (command === 'info') {
-		msg.reply(
+		msg.channel.send(
 			`Leetcode currently has a total of ${totalProblems} problems of which ${freeProblems.length} are free, and ${paidProblems.length} are paid.`,
 		);
 	}
@@ -119,7 +119,7 @@ client.on('message', (msg) => {
 		problemType(paidProblems, msg, diff);
 	}
 	else if (command === 'help') {
-		msg.reply(
+		msg.channel.send(
 			'```Usage:\n\n\t!problem (without args) - gives you a random problem of any difficulty either paid/free.' +
 			'\n\n\t!problem free - gives you a random freely accessible problem of any difficulty.' +
 			'\n\n\t!problem paid - gives you a random paid/locked problem of any difficulty.' +
