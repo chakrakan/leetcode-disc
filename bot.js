@@ -79,18 +79,16 @@ function problemType(data, msg, diff = '') {
 	const randProblem = getRandomInt(dataLen);
 	const aProblem = data[randProblem];
 	const problemUrl = problemUrlBase + aProblem.titleSlug + '/';
-	msg.reply(
-		`Here's a random leetcode ${aProblem.difficulty} ${
-			aProblem.paidOnly ? 'locked/paid' : 'unlocked/free'
-		} problem for you:`,
-	);
+
 	const embed = new MessageEmbed()
 		.setTitle(aProblem.title)
 		.setColor('#f89f1b')
 		// online image from leetcode website for thumbnail (pls don't go down)
 		.setThumbnail('https://leetcode.com/static/images/LeetCode_logo_rvs.png')
-	// ToDo Scrape problem descriptions, add to object and embed (haHA might not do this)
-	// .setDescription('Hello, this is a slick embed!')
+		// ToDo Scrape problem descriptions, add to object and embed (haHA might not do this)
+		.setDescription(`${aProblem.difficulty} ${
+			aProblem.paidOnly ? 'locked/paid' : 'unlocked/free'
+		} problem for you`)
 		.setURL(problemUrl);
 	msg.channel.send(embed);
 }
