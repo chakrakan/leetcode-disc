@@ -1,5 +1,5 @@
 # leetcode-disc
-Discord bot that posts a random leetcode question based on custom commands.
+Discord bot that posts a random [leetcode](https://leetcode.com/) question based on custom commands.
 
 ### Usage
 
