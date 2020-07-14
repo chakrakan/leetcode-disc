@@ -12,3 +12,7 @@ Discord bot that posts a random leetcode question based on custom commands.
 #### Adding difficulty modifiers:
 
 `!problem <free | paid> <easy | medium | hard> - lets you pick a random free or paid problem of the chosen difficulty.`
+
+### Sample
+
+![](https://github.com/chakrakan/leetcode-disc/blob/master/demo/demo.gif)
