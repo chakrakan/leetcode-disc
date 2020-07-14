@@ -5,7 +5,8 @@ Discord bot that posts a random [leetcode](https://leetcode.com/) question based
 
 ##### Regular Commands
 
-`!problem (without args) - gives you a random problem of any difficulty either paid/free.`  
+`!problem (without args) - gives you a random problem of any difficulty either paid/free.` 
+`!problem info - gives you an overview of problems and your progress` (WIP)
 `!problem free - gives you a random freely accessible problem of any difficulty.`  
 `!problem paid - gives you a random paid/locked problem of any difficulty.`  
 
@@ -16,3 +17,8 @@ Discord bot that posts a random [leetcode](https://leetcode.com/) question based
 ### Sample
 
 ![](https://github.com/chakrakan/leetcode-disc/blob/master/demo/demo.gif)
+
+
+### ToDo
+
+- add more feature for per user experience
