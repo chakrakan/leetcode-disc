@@ -21,4 +21,4 @@ Discord bot that posts a random [leetcode](https://leetcode.com/) question based
 
 ### ToDo
 
-- add more feature for per user experience #1 
+- add more feature for per user experience See [#1](https://github.com/chakrakan/leetcode-disc/issues/1#issue-656379593) 
