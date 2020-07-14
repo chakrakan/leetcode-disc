@@ -88,7 +88,7 @@ function problemType(data, msg, diff = '') {
 		// ToDo Scrape problem descriptions, add to object and embed (haHA might not do this)
 		.setDescription(`${aProblem.difficulty} ${
 			aProblem.paidOnly ? 'locked/paid' : 'unlocked/free'
-		} problem for you`)
+		} problem.`)
 		.setURL(problemUrl);
 	msg.channel.send(embed);
 }
