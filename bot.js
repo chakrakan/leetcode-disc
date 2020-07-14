@@ -109,7 +109,7 @@ client.on('message', (msg) => {
 		}
 	}
 
-	if (command === 'total') {
+	if (command === 'info') {
 		msg.reply(
 			`Leetcode currently has a total of ${totalProblems} problems of which ${freeProblems.length} are free, and ${paidProblems.length} are paid.`,
 		);
