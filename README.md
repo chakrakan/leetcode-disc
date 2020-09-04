@@ -1,7 +1,7 @@
 # Leetcode-discord-bot
 Discord bot that posts a random [leetcode](https://leetcode.com/) question based on custom commands.
 
-> NOTE: I have an AWS free tier, and have a limit warning in place for the EC2 instance this bot is hosted on. Depending on monthly usage, the service will go down so I don't incur charges for the month. Sorry, in advance!
+> NOTE: I have an AWS free tier, and have a limit warning in place for the EC2 instance this bot is hosted on. Depending on monthly usage, the service will go down so I don't incur charges for the month. You can check if it's up [here](https://discord.bots.gg/bots/730413116172796007) (if the status symbol is green, it's up!). Sorry, in advance!
 
 ### Installation and running locally
 
