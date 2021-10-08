@@ -1,4 +1,4 @@
-const { Client, MessageEmbed } = require('discord.js');
+const { Client, MessageEmbed, Message } = require('discord.js');
 const axios = require('axios');
 const client = new Client();
 
@@ -68,16 +68,28 @@ client.on('ready', () => {
  * @param {*} msg
  * @param {string} diff
  */
-function problemType(data, msg, diff = '') {
+function problemType(data, msg, diff = '', number = 'unused') {
 	if (diff != '') {
 		const filteredByDiff = data.filter(
 			(problem) => problem.difficulty.toLowerCase() === diff,
 		);
 		data = filteredByDiff;
 	}
+	let missingProblem = false;
 	const dataLen = data.length;
 	const randProblem = getRandomInt(dataLen);
-	const aProblem = data[randProblem];
+	let aProblem = data[randProblem];
+	// check if invalid problem #
+	if (number !== 'unused') {
+		aProblem = data.filter(obj => {
+			return obj.id === number;
+		})[0];
+		if (typeof aProblem === 'undefined') {
+			missingProblem = true;
+			console.log('set missingProblem = true');
+			aProblem = data[randProblem];
+		}
+	}
 	const problemUrl = problemUrlBase + aProblem.titleSlug + '/';
 
 	const embed = new MessageEmbed()
@@ -90,7 +102,15 @@ function problemType(data, msg, diff = '') {
 			aProblem.paidOnly ? 'locked/paid' : 'unlocked/free'
 		} problem.`)
 		.setURL(problemUrl);
-	msg.channel.send(embed);
+	if (missingProblem) {
+		msg.author.send('Problem #' + number + ' is not a valid problem.')
+			.then(() => console.log(`Replied to message "${msg.content}"`))
+			.catch(console.error);
+		msg.delete();
+	} else {
+		msg.channel.send(embed);
+		msg.delete();
+	}
 }
 
 client.on('message', (msg) => {
@@ -99,11 +119,25 @@ client.on('message', (msg) => {
 	const args = msg.content.slice(prefix.length).trim().split(' ');
 	const command = args.shift().toLowerCase();
 	let diff;
+	let problemNumber;
 
 	if (typeof args[0] != 'undefined') {
 		const temp = args[0].toLowerCase();
 		if (['easy', 'medium', 'hard'].indexOf(temp) >= 0) {
 			diff = temp;
+		} else {
+			// try catch because I don't want to read Javascript that carefully :)
+			try {
+				problemNumber = parseInt(temp);
+				console.log('parsed number: #' + problemNumber + ' for problem');
+			} catch (e) {
+				// noop see https://stackoverflow.com/questions/21634886/what-is-the-javascript-convention-for-no-operation
+				// Function.prototype;
+				console.log('failed to parse number for problem');
+				console.log('tried to parse: ##' + temp + '##');
+				console.log('type: ' + typeof(temp));
+				console.log(e);
+			}
 		}
 	}
 
@@ -112,6 +146,20 @@ client.on('message', (msg) => {
 			`Leetcode currently has a total of ${totalProblems} problems of which ${freeProblems.length} are free, and ${paidProblems.length} are paid.`,
 		);
 	}
+	else if (command === 'number') {
+		problemType(freeProblems, msg, diff, problemNumber);
+	}
+	else if (Number.isInteger(parseInt(command))) {
+		msg.author.send(
+			'You sent invalid message: ' + msg.content +
+			'```Usage:\n\n\t!problem (without args) - gives you a random problem of any difficulty either paid/free.' +
+			'\n\n\t!problem free - gives you a random freely accessible problem of any difficulty.' +
+			'\n\n\t!problem paid - gives you a random paid/locked problem of any difficulty.' +
+			'\n\n\t!problem number # - gives you a random paid/locked problem of any difficulty.' +
+			'\n\nAdding difficulty modifiers:\n\n\t!problem <free | paid> <easy | medium | hard> - lets you pick a random free or paid problem of the chosen difficulty.```',
+		)
+			.then(() => console.log(`Replied to message "${msg.content}"`))
+			.catch(console.error);	}
 	else if (command === 'free') {
 		problemType(freeProblems, msg, diff);
 	}
@@ -123,6 +171,7 @@ client.on('message', (msg) => {
 			'```Usage:\n\n\t!problem (without args) - gives you a random problem of any difficulty either paid/free.' +
 			'\n\n\t!problem free - gives you a random freely accessible problem of any difficulty.' +
 			'\n\n\t!problem paid - gives you a random paid/locked problem of any difficulty.' +
+			'\n\n\t!problem number # - gives you a random paid/locked problem of any difficulty.' +
 			'\n\nAdding difficulty modifiers:\n\n\t!problem <free | paid> <easy | medium | hard> - lets you pick a random free or paid problem of the chosen difficulty.```',
 		);
 	}
