@@ -1,3 +1,7 @@
+# This is a fork by GitHub user jamesylgan for usage on a personal channel
+
+--------------------------------------------
+
 # Leetcode-discord-bot
 Discord bot that posts a random [leetcode](https://leetcode.com/) question based on custom commands.
 
