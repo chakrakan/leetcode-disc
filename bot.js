@@ -1,6 +1,8 @@
-const { Client, MessageEmbed, Message } = require('discord.js');
+const { Client, MessageEmbed } = require('discord.js');
 const axios = require('axios');
-const client = new Client();
+const client = new Client({
+	intents: ["GUILDS", "GUILD_MESSAGES",],
+});
 
 const prefix = '!problem';
 const problemUrlBase = 'https://leetcode.com/problems/';
@@ -52,6 +54,7 @@ axios
 		});
 	})
 	.catch((err) => {
+		console.log("REST call error");
 		console.log(err);
 	});
 
@@ -108,12 +111,25 @@ function problemType(data, msg, diff = '', number = 'unused') {
 			.catch(console.error);
 		msg.delete();
 	} else {
-		msg.channel.send(embed);
-		msg.delete();
+		msg.channel.threads.create({
+			name: aProblem.title,
+			autoArchiveDuration: 1440,
+			reason: 'Thread to discuss problem #' + aProblem.id,
+		})
+			.then(threadChannel => {
+				console.log(embed);
+				threadChannel.send({
+					embeds: [embed],
+				});
+			})
+			.catch(console.error);
+		msg.delete()
+			.then(message => console.log(`Deleted message from ${message.author.username}`))
+			.catch(console.error);
 	}
 }
 
-client.on('message', (msg) => {
+client.on('messageCreate', (msg) => {
 	if (!msg.content.startsWith(prefix) || msg.author.bot) return;
 
 	const args = msg.content.slice(prefix.length).trim().split(' ');
@@ -125,14 +141,14 @@ client.on('message', (msg) => {
 		const temp = args[0].toLowerCase();
 		if (['easy', 'medium', 'hard'].indexOf(temp) >= 0) {
 			diff = temp;
-		} else {
+		}
+		else {
 			// try catch because I don't want to read Javascript that carefully :)
 			try {
 				problemNumber = parseInt(temp);
 				console.log('parsed number: #' + problemNumber + ' for problem');
-			} catch (e) {
-				// noop see https://stackoverflow.com/questions/21634886/what-is-the-javascript-convention-for-no-operation
-				// Function.prototype;
+			}
+			catch (e) {
 				console.log('failed to parse number for problem');
 				console.log('tried to parse: ##' + temp + '##');
 				console.log('type: ' + typeof(temp));
@@ -159,7 +175,8 @@ client.on('message', (msg) => {
 			'\n\nAdding difficulty modifiers:\n\n\t!problem <free | paid> <easy | medium | hard> - lets you pick a random free or paid problem of the chosen difficulty.```',
 		)
 			.then(() => console.log(`Replied to message "${msg.content}"`))
-			.catch(console.error);	}
+			.catch(console.error);
+	}
 	else if (command === 'free') {
 		problemType(freeProblems, msg, diff);
 	}
